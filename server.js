@@ -18,7 +18,9 @@ const PUBLIC_DIR = path.resolve(__dirname, "public");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//add routes
+//require route file
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
 
 
 
