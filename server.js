@@ -8,15 +8,13 @@ const app = express();
 //allows Heroku to choose a PORT or uses local host 3000
 const PORT = process.env.PORT || 3000;
 
-
-// MIDDLEWARE: Sets up the express app to handle data parsing
+// MIDDLEWARE: Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//require route file
+//require routes file
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
-
 
 //listen on the PORT
 app.listen(PORT, function() {
