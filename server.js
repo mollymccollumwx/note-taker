@@ -2,6 +2,8 @@
 const express = require("express");
 //require node.js path module 
 const path = require("path");
+//require node.js file system
+const fs = require("fs");
 
 //create an instance of Express
 const app = express();
