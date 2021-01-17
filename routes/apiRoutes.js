@@ -35,6 +35,8 @@ app.get("/api/notes", function(req, res) {
 });
 //api route "post" will put data into the db.json file
 app.post("/api/notes", function(res, req){
+    notes.push(req.body);
+    res.json(notes);
 
 });
 }
