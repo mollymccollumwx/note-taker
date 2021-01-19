@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 // package to create random ids
-const {v4: uuidv4} = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = function (app) {
   //api route "get" will get data from the db.json file and return all as JSON
@@ -10,12 +10,13 @@ module.exports = function (app) {
     res.sendFile(path.join(__dirname, "../db/db.json"));
   });
 
-  fs.readFile("./db/db.json", "utf8", (err, data) => {
-    if (err) throw err;
-    var parsedNotes = JSON.parse(data);
+  // api route "post" will put data into the db.json file
+  app.post("/api/notes", (req, res) => {
+    console.log(req);
+    fs.readFile("./db/db.json", "utf8", (err, data) => {
+      if (err) throw err;
+      var parsedNotes = JSON.parse(data);
 
-    // api route "post" will put data into the db.json file
-    app.post("/api/notes", (res, req) => {
       let newNote = req.body;
       newNote.id = uuidv4();
 
@@ -24,23 +25,28 @@ module.exports = function (app) {
       fs.writeFile("db/db.json", JSON.stringify(parsedNotes), (err) => {
         if (err) throw err;
         console.log("The new note has been saved");
+        res.json(newNote);
       });
     });
+  });
 
-    //api route to delete notes from db.json file
-    app.delete("api/notes/:id", (req, res) => {
+  //api route to delete notes from db.json file
+  app.delete("/api/notes/:id", (req, res) => {
+    fs.readFile("./db/db.json", "utf8", (err, data) => {
+      if (err) throw err;
+      var parsedNotes = JSON.parse(data);
+
       const noteID = req.params.id;
       const newDb = parsedNotes.filter((note) => {
-        return note.id !==noteID;
-      })
+        return note.id !== noteID;
+      });
 
       fs.writeFile("db/db.json", JSON.stringify(newDb), (err) => {
         if (err) throw err;
         console.log("The note has been deleted");
+        res.json("Success!");
       });
-
     });
-    
   });
 };
 // // * The following API routes should be created:
