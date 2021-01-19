@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 // MIDDLEWARE: Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 
 //require routes file
 require("./routes/apiRoutes")(app);
