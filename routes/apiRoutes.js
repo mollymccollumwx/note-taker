@@ -12,7 +12,6 @@ module.exports = function (app) {
 
   // api route "post" will put data into the db.json file
   app.post("/api/notes", (req, res) => {
-    console.log(req);
     fs.readFile("./db/db.json", "utf8", (err, data) => {
       if (err) throw err;
       var parsedNotes = JSON.parse(data);
