@@ -17,11 +17,14 @@ module.exports = function (app) {
       if (err) throw err;
       var parsedNotes = JSON.parse(data);
 
+      // receive a new note to save on the request body
       let newNote = req.body;
+      // gives each new note a unique ID using uuid package
       newNote.id = uuidv4();
 
       parsedNotes.push(newNote);
 
+      // add it to the `db.json` file, and then return the new note to the client.
       fs.writeFile("db/db.json", JSON.stringify(parsedNotes), (err) => {
         if (err) throw err;
         console.log("The new note has been saved");
@@ -36,11 +39,13 @@ module.exports = function (app) {
       if (err) throw err;
       var parsedNotes = JSON.parse(data);
 
+      // receive a query parameter containing the id of a note to delete.
       const noteID = req.params.id;
+      //removes the note with the ID you want to delete
       const newDb = parsedNotes.filter((note) => {
         return note.id !== noteID;
       });
-
+      //rewrites the db.json file without the note that was deleted
       fs.writeFile("db/db.json", JSON.stringify(newDb), (err) => {
         if (err) throw err;
         console.log("The note has been deleted");
@@ -49,14 +54,4 @@ module.exports = function (app) {
     });
   });
 };
-// // * The following API routes should be created:
 
-//   * GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
-
-//   * POST `/api/notes` - Should receive a new note to save on the request body,
-// add it to the `db.json` file, and then return the new note to the client.
-
-//   * DELETE `/api/notes/:id` - Should receive a query parameter containing
-// the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved.
-// In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property,
-// and then rewrite the notes to the `db.json` file.
